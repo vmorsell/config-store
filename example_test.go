@@ -28,4 +28,5 @@ func Example() {
 	}
 
 	fmt.Println(stored.APIKey)
+	// Output: xyz
 }
