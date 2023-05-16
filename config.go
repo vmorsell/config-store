@@ -22,16 +22,19 @@ type ConfigStore struct {
 }
 
 const (
-	configDir      = ".config"
-	configFilename = "config.json"
-	defaultAppName = "unnamed_app"
+	// Configfilename is the name of the JSON file where the config is stored.
+	ConfigFilename = "config.json"
+
+	// DefaultAppName is the fallback name for the application directory
+	// unless set.
+	DefaultAppName = "unnamed_app"
 )
 
 // NewConfigStore returns a new config.
 func NewConfigStore(appName string) (*ConfigStore, error) {
-	homeDir, err := os.UserHomeDir()
+	dir, err := os.UserConfigDir()
 	if err != nil {
-		return nil, fmt.Errorf("user home dir: %w", err)
+		return nil, fmt.Errorf("user config dir: %w", err)
 	}
 
 	if appName == "" {
@@ -40,7 +43,7 @@ func NewConfigStore(appName string) (*ConfigStore, error) {
 
 	return &ConfigStore{
 		AppName: appName,
-		RootDir: filepath.Join(homeDir, configDir),
+		RootDir: dir,
 	}, nil
 }
 
