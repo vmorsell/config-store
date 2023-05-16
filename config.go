@@ -32,17 +32,26 @@ type Settings struct {
 	appName string
 }
 
-// MustNewConfig returns a new config or panics.
-func MustNewConfigStore() ConfigStore {
+// NewConfigStore returns a new config.
+func NewConfigStore() (ConfigStore, error) {
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
-		panic(err)
+		return nil, fmt.Errorf("user home dir: %w", err)
 	}
 
 	return &configStore{
 		rootDir: filepath.Join(homeDir, configDir),
 		appName: defaultAppName,
+	}, nil
+}
+
+// MustNewConfig returns a new config or panics.
+func MustNewConfigStore() ConfigStore {
+	configStore, err := NewConfigStore()
+	if err != nil {
+		panic(err)
 	}
+	return configStore
 }
 
 // Set app name. This controls where the config file is stored.
