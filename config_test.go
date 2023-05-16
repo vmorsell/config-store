@@ -8,11 +8,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-type Config struct {
-	A string  `json:"a"`
-	B *string `json:"b"`
-}
-
 func TestNewConfigStore(t *testing.T) {
 	_, err := New("app")
 	require.Nil(t, err)
