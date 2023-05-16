@@ -1,4 +1,4 @@
-module github.com/vmorsell/config-store
+module github.com/vmorsell/configstore
 
 go 1.20
 

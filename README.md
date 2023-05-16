@@ -1,21 +1,21 @@
-# config-store
+# configstore
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/vmorsell/config-store.svg)](https://pkg.go.dev/github.com/vmorsell/config-store)
+[![Go Reference](https://pkg.go.dev/badge/github.com/vmorsell/configstore.svg)](https://pkg.go.dev/github.com/vmorsell/configstore)
 
 Persistent config storage for Go applications. Allows putting and getting a single config
 file.
 
 ## Installation
 
-Install config-store using `go get`
+Install configstore using `go get`
 
-    go get github.com/vmorsell/config-store
+    go get github.com/vmorsell/configstore
 
 Import the package in your app
 
 ```go
 import (
-    "github.com/vmorsell/config-store"
+    "github.com/vmorsell/configstore"
 )
 
 func main() {
