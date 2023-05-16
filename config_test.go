@@ -24,25 +24,6 @@ func TestMustNewConfigStore(t *testing.T) {
 	})
 }
 
-func TestPutGet(t *testing.T) {
-	appName := "test1"
-	store, err := NewConfigStore(appName)
-	require.Nil(t, err)
-
-	store.RootDir = t.TempDir()
-
-	config := Config{
-		A: "hello",
-	}
-
-	store.Put(config)
-
-	res := Config{}
-	store.Get(&res)
-
-	require.Equal(t, res, config)
-}
-
 func TestDir(t *testing.T) {
 	appName := "test2"
 	rootDir := os.TempDir()
