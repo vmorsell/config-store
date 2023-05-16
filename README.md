@@ -1,5 +1,7 @@
 # config-store
 
+[![Go Reference](https://pkg.go.dev/badge/github.com/vmorsell/config-store.svg)](https://pkg.go.dev/github.com/vmorsell/config-store)
+
 Persistent config storage with go. Allows putting and getting a single config
 file for an application.
 
