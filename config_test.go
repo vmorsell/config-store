@@ -13,11 +13,23 @@ type Config struct {
 	B *string `json:"b"`
 }
 
-func TestGetPut(t *testing.T) {
+func TestNewConfigStore(t *testing.T) {
+	_, err := NewConfigStore("app")
+	require.Nil(t, err)
+}
+
+func TestMustNewConfigStore(t *testing.T) {
+	require.NotPanics(t, func() {
+		MustNewConfigStore("app")
+	})
+}
+
+func TestPutGet(t *testing.T) {
 	appName := "test1"
-	store := MustNewConfigStore().
-		WithAppName(appName).
-		WithRootDir(t.TempDir())
+	store, err := NewConfigStore(appName)
+	require.Nil(t, err)
+
+	store.RootDir = t.TempDir()
 
 	config := Config{
 		A: "hello",
@@ -32,32 +44,30 @@ func TestGetPut(t *testing.T) {
 }
 
 func TestDir(t *testing.T) {
-	rootDir := os.TempDir()
 	appName := "test2"
-	want := filepath.Join(rootDir, configDir, appName)
+	rootDir := os.TempDir()
+	want := filepath.Join(rootDir, appName)
 
-	S := MustNewConfigStore().
-		WithAppName(appName).
-		WithRootDir(rootDir)
+	store, err := NewConfigStore(appName)
+	require.Nil(t, err)
 
-	s := S.(*configStore)
+	store.RootDir = rootDir
 
-	dir := s.dir()
+	dir := store.dir()
 	require.Equal(t, dir, want)
 }
 
 func TestFilepath(t *testing.T) {
-	rootDir := os.TempDir()
 	appName := "test3"
-	want := filepath.Join(rootDir, configDir, appName, configFilename)
+	rootDir := os.TempDir()
+	want := filepath.Join(rootDir, appName, configFilename)
 
-	S := MustNewConfigStore().
-		WithRootDir(rootDir).
-		WithAppName(appName)
+	store, err := NewConfigStore(appName)
+	require.Nil(t, err)
 
-	s := S.(*configStore)
+	store.RootDir = rootDir
 
-	path := s.filepath()
+	path := store.filepath()
 	require.Equal(t, want, path)
 }
 
