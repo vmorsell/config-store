@@ -19,7 +19,7 @@ import (
 )
 
 func main() {
-    configStore := MustNewConfigStore("my-app")
+    store := configstore.Must(configstore.New("my-app"))
     /* ... */
 }
 ```
@@ -29,20 +29,23 @@ func main() {
 ```go
 type Config struct {
     APIKey string `json:"api_key"`
-    Username string `json:"username"`
 }
 
-configStore := configstore.MustNewConfigStore("my-app")
+store := configstore.Must(configstore.New("my-app"))
 
+// Write config to file.
 config := Config{
-    APIKey: "abc",
-    Username: "user1",
+    APIKey: "xyz",
+}
+if err := store.Put(config); err != nil {
+    panic(err)
 }
 
-store.Put(config)
-
+// Read config from file.
 stored := Config{}
-store.Get(&stored)
+if err := store.Get(&stored); err != nil {
+    panic(err)
+}
 
 fmt.Println(stored.APIKey)
 ```

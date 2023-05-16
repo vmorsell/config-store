@@ -13,7 +13,7 @@ type Config struct {
 func Example() {
 	store := configstore.Must(configstore.New("app"))
 
-	// Store config to file.
+	// Write config to file.
 	config := Config{
 		APIKey: "xyz",
 	}
