@@ -30,15 +30,15 @@ const (
 	DefaultAppName = "unnamed_app"
 )
 
-// NewConfigStore returns a new config.
-func NewConfigStore(appName string) (*ConfigStore, error) {
+// NewConfigStore returns a new config store.
+func New(appName string) (*ConfigStore, error) {
 	dir, err := os.UserConfigDir()
 	if err != nil {
 		return nil, fmt.Errorf("user config dir: %w", err)
 	}
 
 	if appName == "" {
-		appName = defaultAppName
+		appName = DefaultAppName
 	}
 
 	return &ConfigStore{
@@ -47,27 +47,29 @@ func NewConfigStore(appName string) (*ConfigStore, error) {
 	}, nil
 }
 
-// MustNewConfig returns a new config or panics.
-func MustNewConfigStore(appName string) *ConfigStore {
-	configStore, err := NewConfigStore(appName)
+// Must is a helper function to ensure the config store is valid and there was
+// no error when calling a NewConfigStore function.
+//
+// This helper is intended to be used in variable initialization to load the
+// Session and configuration at startup. Such as:
+//
+//	store := configstore.Must(configstore.New("app_name"))
+func Must(cs *ConfigStore, err error) *ConfigStore {
 	if err != nil {
 		panic(err)
 	}
-	return configStore
-}
 
-var (
-	errAppNameNotSet = fmt.Errorf("app name not set")
-)
+	return cs
+}
 
 // Get reads the config file from disk and stores the config in the value
 // pointed to by v.
-func (c *ConfigStore) Get(v interface{}) error {
-	if err := ensureDirExists(c.dir()); err != nil {
+func (cs *ConfigStore) Get(v interface{}) error {
+	if err := ensureDirExists(cs.Dir()); err != nil {
 		return fmt.Errorf("ensure dir exists: %w", err)
 	}
 
-	file, err := os.Open(c.filepath())
+	file, err := os.Open(cs.Filepath())
 	if err != nil {
 		if os.IsNotExist(err) {
 			return nil
@@ -89,12 +91,12 @@ func (c *ConfigStore) Get(v interface{}) error {
 
 // Put writes the provided configuration to disk. If a config file already
 // exists, it will be overwritten.
-func (c *ConfigStore) Put(v interface{}) error {
-	if err := ensureDirExists(c.dir()); err != nil {
+func (cs *ConfigStore) Put(v interface{}) error {
+	if err := ensureDirExists(cs.Dir()); err != nil {
 		return fmt.Errorf("ensure dir exists: %w", err)
 	}
 
-	file, err := os.Create(c.filepath())
+	file, err := os.Create(cs.Filepath())
 	if err != nil {
 		return fmt.Errorf("open file: %w", err)
 	}

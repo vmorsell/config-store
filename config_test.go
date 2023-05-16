@@ -14,13 +14,13 @@ type Config struct {
 }
 
 func TestNewConfigStore(t *testing.T) {
-	_, err := NewConfigStore("app")
+	_, err := New("app")
 	require.Nil(t, err)
 }
 
 func TestMustNewConfigStore(t *testing.T) {
 	require.NotPanics(t, func() {
-		MustNewConfigStore("app")
+		Must(New("app"))
 	})
 }
 
@@ -48,7 +48,7 @@ func TestDir(t *testing.T) {
 	rootDir := os.TempDir()
 	want := filepath.Join(rootDir, appName)
 
-	store, err := NewConfigStore(appName)
+	store, err := New(appName)
 	require.Nil(t, err)
 
 	store.RootDir = rootDir
@@ -62,7 +62,7 @@ func TestFilepath(t *testing.T) {
 	rootDir := os.TempDir()
 	want := filepath.Join(rootDir, appName, ConfigFilename)
 
-	store, err := NewConfigStore(appName)
+	store, err := New(appName)
 	require.Nil(t, err)
 
 	store.RootDir = rootDir
