@@ -9,52 +9,48 @@ import (
 )
 
 type ConfigStore struct {
-	rootDir string
-	appName string
+	// The app name controls the name of the directory where the config JSON
+	// file will be stored. The path will look something like the path below.
+	// root_dir/.config/app_name/config.json
+	AppName string
+
+	// RootDir defines where config files are stored in the operating system.
+	// This defaults to $HOME/.config on Unix and macOS, and
+	// %USERPROFILE%/.config on Windows.
+	// You probably want to go with the default from NewConfigStore().
+	RootDir string
 }
 
 const (
 	configDir      = ".config"
 	configFilename = "config.json"
-	defaultAppName = "default"
+	defaultAppName = "unnamed_app"
 )
 
 // NewConfigStore returns a new config.
-func NewConfigStore() (*ConfigStore, error) {
+func NewConfigStore(appName string) (*ConfigStore, error) {
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
 		return nil, fmt.Errorf("user home dir: %w", err)
 	}
 
+	if appName == "" {
+		appName = defaultAppName
+	}
+
 	return &ConfigStore{
-		rootDir: filepath.Join(homeDir, configDir),
-		appName: defaultAppName,
+		AppName: appName,
+		RootDir: filepath.Join(homeDir, configDir),
 	}, nil
 }
 
 // MustNewConfig returns a new config or panics.
-func MustNewConfigStore() *ConfigStore {
-	configStore, err := NewConfigStore()
+func MustNewConfigStore(appName string) *ConfigStore {
+	configStore, err := NewConfigStore(appName)
 	if err != nil {
 		panic(err)
 	}
 	return configStore
-}
-
-// WithAppName sets the app name. This controls the name of the directory where
-// the config file is stored. The path will look something like the path below.
-// root_dir/.config/app_name/config.json
-func (c *ConfigStore) WithAppName(name string) *ConfigStore {
-	c.appName = name
-	return c
-}
-
-// WithRootDir overrides the default config files root directory. This defaults
-// to $HOME/.config on Unix and macOS, and %USERPROFILE%/.config on Windows.
-// You probably don't want to do this.
-func (c *ConfigStore) WithRootDir(dir string) *ConfigStore {
-	c.rootDir = filepath.Join(dir, configDir)
-	return c
 }
 
 var (
@@ -114,7 +110,7 @@ func (c *ConfigStore) Put(v interface{}) error {
 
 // dir returns the full path to the directory where the config file is stored.
 func (c *ConfigStore) dir() string {
-	return filepath.Join(c.rootDir, c.appName)
+	return filepath.Join(c.RootDir, c.AppName)
 }
 
 // filepath returns the full path to the config file.
