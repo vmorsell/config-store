@@ -19,7 +19,7 @@ import (
 )
 
 func main() {
-    configStore := MustNewConfigStore().WithAppName("my-app")
+    configStore := MustNewConfigStore("my-app")
     /* ... */
 }
 ```
@@ -32,7 +32,7 @@ type Config struct {
     Username string `json:"username"`
 }
 
-configStore := configstore.MustNewConfigStore().WithAppName("my-app")
+configStore := configstore.MustNewConfigStore("my-app")
 
 config := Config{
     APIKey: "abc",
@@ -43,4 +43,6 @@ store.Put(config)
 
 stored := Config{}
 store.Get(&stored)
+
+fmt.Println(stored.APIKey)
 ```
