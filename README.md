@@ -2,8 +2,8 @@
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/vmorsell/config-store.svg)](https://pkg.go.dev/github.com/vmorsell/config-store)
 
-Persistent config storage with go. Allows putting and getting a single config
-file for an application.
+Persistent config storage for Go applications. Allows putting and getting a single config
+file.
 
 ## Installation
 
@@ -28,8 +28,8 @@ func main() {
 
 ```go
 type Config struct {
-    APIKey string `json:"apiKey"`
-    Username string `json:"apiKey"`
+    APIKey string `json:"api_key"`
+    Username string `json:"username"`
 }
 
 configStore := configstore.MustNewConfigStore().WithAppName("my-app")
