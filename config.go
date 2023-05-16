@@ -28,10 +28,6 @@ const (
 	defaultAppName = "default"
 )
 
-type Settings struct {
-	appName string
-}
-
 // NewConfigStore returns a new config.
 func NewConfigStore() (ConfigStore, error) {
 	homeDir, err := os.UserHomeDir()
