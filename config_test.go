@@ -53,21 +53,21 @@ func TestDir(t *testing.T) {
 
 	store.RootDir = rootDir
 
-	dir := store.dir()
+	dir := store.Dir()
 	require.Equal(t, dir, want)
 }
 
 func TestFilepath(t *testing.T) {
 	appName := "test3"
 	rootDir := os.TempDir()
-	want := filepath.Join(rootDir, appName, configFilename)
+	want := filepath.Join(rootDir, appName, ConfigFilename)
 
 	store, err := NewConfigStore(appName)
 	require.Nil(t, err)
 
 	store.RootDir = rootDir
 
-	path := store.filepath()
+	path := store.Filepath()
 	require.Equal(t, want, path)
 }
 

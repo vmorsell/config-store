@@ -111,14 +111,14 @@ func (c *ConfigStore) Put(v interface{}) error {
 	return nil
 }
 
-// dir returns the full path to the directory where the config file is stored.
-func (c *ConfigStore) dir() string {
-	return filepath.Join(c.RootDir, c.AppName)
+// Dir returns the full path to the directory where the config file is stored.
+func (cs *ConfigStore) Dir() string {
+	return filepath.Join(cs.RootDir, cs.AppName)
 }
 
-// filepath returns the full path to the config file.
-func (c *ConfigStore) filepath() string {
-	return filepath.Join(c.dir(), configFilename)
+// Filepath returns the full path to the config file.
+func (cs *ConfigStore) Filepath() string {
+	return filepath.Join(cs.Dir(), ConfigFilename)
 }
 
 // ensureDirExists ensures all folders in the path exists.
