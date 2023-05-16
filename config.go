@@ -1,3 +1,5 @@
+// Package configstore provides a persistent storage for config files. It
+// supports storing config to a single JSON file per application.
 package configstore
 
 import (
