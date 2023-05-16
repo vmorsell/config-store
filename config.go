@@ -5,7 +5,7 @@ package configstore
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"os"
 	"path/filepath"
 )
@@ -79,7 +79,7 @@ func (cs *ConfigStore) Get(v interface{}) error {
 		return fmt.Errorf("open file: %w", err)
 	}
 
-	data, err := ioutil.ReadAll(file)
+	data, err := io.ReadAll(file)
 	if err != nil {
 		return fmt.Errorf("read all: %w", err)
 	}
